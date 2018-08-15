@@ -1604,6 +1604,7 @@ define([
         passes.pick = false;
         passes.depth = false;
         passes.postProcess = false;
+        passes.offscreen = false;
     }
 
     function updateFrameState(scene, frameNumber, time) {
@@ -2205,7 +2206,6 @@ define([
         var camera = scene._camera;
         var context = scene.context;
         var us = context.uniformState;
-        var frameState = scene._frameState;
 
         us.updateCamera(camera);
 
@@ -2921,6 +2921,7 @@ define([
         // Update celestial and terrestrial environment effects.
         var environmentState = scene._environmentState;
         var renderPass = frameState.passes.render;
+        var offscreenPass = frameState.passes.offscreen;
         var skyAtmosphere = scene.skyAtmosphere;
         var globe = scene.globe;
 
@@ -2953,7 +2954,7 @@ define([
         }
 
         environmentState.renderTranslucentDepthForPick = false;
-        environmentState.useWebVR = scene._useWebVR && scene.mode !== SceneMode.SCENE2D;
+        environmentState.useWebVR = scene._useWebVR && scene.mode !== SceneMode.SCENE2D && !offscreenPass;
 
         var occluder = (frameState.mode === SceneMode.SCENE3D) ? frameState.occluder: undefined;
         var cullingVolume = frameState.cullingVolume;
@@ -3084,7 +3085,7 @@ define([
         clear.execute(context, passState);
 
         // Update globe depth rendering based on the current context and clear the globe depth framebuffer.
-        // Globe depth needs is copied for Pick to support picking batched geometries in GroundPrimitives.
+        // Globe depth is copied for the pick pass to support picking batched geometries in GroundPrimitives.
         var useGlobeDepthFramebuffer = environmentState.useGlobeDepthFramebuffer = defined(scene._globeDepth);
         if (useGlobeDepthFramebuffer) {
             scene._globeDepth.update(context, passState);
