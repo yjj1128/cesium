@@ -578,6 +578,7 @@ define([
         this._requestType = options.requestType;
         this._upAxis = defaultValue(options.upAxis, Axis.Y);
         this._forwardAxis = defaultValue(options.forwardAxis, Axis.Z);
+        this._depthMask = options.depthMask;
 
         /**
          * @private
@@ -2741,7 +2742,7 @@ define([
                 blue : colorMask[2],
                 alpha : colorMask[3]
             },
-            depthMask : defined(statesFunctions.depthMask) ? statesFunctions.depthMask[0] : true,
+            depthMask : defaultValue(model._depthMask, statesFunctions.depthMask ? statesFunctions.depthMask[0] : true),
             blending : {
                 enabled : booleanStates[WebGLConstants.BLEND],
                 color : {

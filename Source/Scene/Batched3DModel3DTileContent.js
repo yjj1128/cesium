@@ -384,7 +384,8 @@ define([
                 uniformMapLoaded : batchTable.getUniformMapCallback(),
                 pickIdLoaded : getPickIdCallback(content),
                 addBatchIdToGeneratedShaders : (batchLength > 0), // If the batch table has values in it, generated shaders will need a batchId attribute
-                pickObject : pickObject
+                pickObject : pickObject,
+                depthMask : tileset._depthMask
             });
         } else {
             // This transcodes glTF to an internal representation for geometry so we can take advantage of the re-batching of vector data.
